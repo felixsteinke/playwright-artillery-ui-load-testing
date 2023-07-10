@@ -1,0 +1,12 @@
+{
+  "name": "playwright-artillery-ui-load-testing",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "echo Read the README.md for the usage description.",
+    "artillery": "artillery run src/artillery-script.yml"
+  },
+  "dependencies": {
+    "artillery": "^2.0.0-34",
+    "playwright": "^1.35.1"
+  }
+}
