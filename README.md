@@ -24,6 +24,10 @@ npx playwright codegen https://www.google.com/
 Copy the generated code into the `function usageScenario(page)` of
 the [playwright-scenario.js](src/playwright-scenario.js).
 
+![Playwright Codegen](.docs/playwright-codegen.png)
+
+Edit the code with potentially `await sleep(ms);` to make the scenario more realistic. 
+
 ### 2. Run Artillery Script
 
 Adjust [artillery-script.yml](src/artillery-script.yml) with a custom scenario like the [options.yml](src/options.yml)
