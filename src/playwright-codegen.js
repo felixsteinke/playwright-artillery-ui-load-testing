@@ -1,6 +1,6 @@
 const {chromium} = require('@playwright/test');
 
-//configuration
+// configuration
 const username = '';
 const password = '';
 const pageUrl = '';
