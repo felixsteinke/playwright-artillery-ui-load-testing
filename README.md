@@ -17,8 +17,16 @@ npm install
 
 Start the __Playwright Code Generator__ with the `URL` of the interested website.
 
+__Default Code Generator__:
+
 ```shell
 npx playwright codegen https://www.google.com/
+```
+
+__Custom Code Generator__ (config from [playwright-codegen.js](src/playwright-codegen.js)):
+
+```shell
+npm run codegen
 ```
 
 Copy the generated code into the `function usageScenario(page)` of

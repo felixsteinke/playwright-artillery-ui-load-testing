@@ -12,3 +12,14 @@ config:
     - name: Sustained peak load
       duration: 300
       rampTo: 50
+  # playwright engine configuration
+  engines:
+    playwright:
+      launchOptions:
+        headless: false
+      contextOptions:
+        httpCredentials: {"username": "my-username", "password": "my-password"}
+  # constant path
+  processor: "./playwright-scenario.js"
+  # required but unused target
+  target: "http://localhost"
