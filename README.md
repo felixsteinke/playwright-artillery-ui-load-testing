@@ -54,11 +54,14 @@ Answer the CLI, and it will save the selected scenario to [3-scenario](3-scenari
 
 ### 4. Run Artillery Script
 
-Adjust [artillery-script.yml](src/artillery-script.yml) with custom options like
-the [artillery-options.yml](src/artillery-options.yml) and run it:
+Adjust [artillery-script.yml](src/artillery-script.yml) with custom options and run it:
 
 ```shell
-npm run artillery
+npm run load
+```
+
+```shell
+npm run rampup
 ```
 
 ## References

@@ -9,8 +9,9 @@
     "2": "node src/code-transformer.js",
     "select": "node src/scenario-selector.js",
     "3": "node src/scenario-selector.js",
-    "artillery": "artillery run src/artillery-script.yml",
-    "4": "artillery run src/artillery-script.yml"
+    "load": "artillery run src/artillery-script.yml",
+    "4": "artillery run src/artillery-script.yml",
+    "rampup": "artillery run src/artillery-rampup.yml"
   },
   "dependencies": {
     "@playwright/test": "^1.35.1",
