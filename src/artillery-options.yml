@@ -20,6 +20,6 @@ config:
       contextOptions:
         httpCredentials: {"username": "my-username", "password": "my-password"}
   # constant path
-  processor: "./playwright-scenario.js"
+  processor: "../3-scenario/playwright-scenario.js"
   # required but unused target
   target: "http://localhost"

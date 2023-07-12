@@ -18,6 +18,26 @@ const pageUrl = '';
     // open page
     const page = await context.newPage();
     await page.goto(pageUrl);
+    // insert generated code here
+
+
+
+    // insert generated code here
     // start recording
     await page.pause();
+    // teardown after recording
+    await context.close();
+    await browser.close();
 })();
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function isVisible(locator, timeout) {
+    if (timeout) {
+        await locator.isVisible({timeout: timeout});
+    } else {
+        await locator.isVisible({timeout: 5000});
+    }
+}

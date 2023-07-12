@@ -29,17 +29,33 @@ __Custom Code Generator__ (config from [playwright-codegen.js](src/playwright-co
 npm run codegen
 ```
 
-Copy the generated code into the `function usageScenario(page)` of
-the [playwright-scenario.js](src/playwright-scenario.js).
+Copy the generated code into one or more `.js` files into the [1-generated-code](1-generated-code) directory.
 
 ![Playwright Codegen](.docs/playwright-codegen.png)
 
-Edit the code with potentially `await sleep(ms);` to make the scenario more realistic. 
+### 2. Transform generated Code
 
-### 2. Run Artillery Script
+The generated code must be modified for a reliable load test. Run the following command to transform all generated files
+in the [1-generated-code](1-generated-code) directory and save them to [2-transformed-code](2-transformed-code):
 
-Adjust [artillery-script.yml](src/artillery-script.yml) with a custom scenario like the [options.yml](src/options.yml)
-and run it:
+```shell
+npm run transform
+```
+
+### 3. Select Usage Scenario
+
+After generating the transformed scripts (and verifying them), select a script as usage scenario via the command line:
+
+```shell
+npm run select
+```
+
+Answer the CLI, and it will save the selected scenario to [3-scenario](3-scenario) for the artillery execution.
+
+### 4. Run Artillery Script
+
+Adjust [artillery-script.yml](src/artillery-script.yml) with custom options like
+the [artillery-options.yml](src/artillery-options.yml) and run it:
 
 ```shell
 npm run artillery

@@ -4,4 +4,7 @@ node_modules/
 HELP.json
 HELP.md
 
+1-generated-code/
+2-transformed-code/
+3-scenario/
 !**/.gitkeep
