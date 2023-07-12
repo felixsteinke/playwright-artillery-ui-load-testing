@@ -14,7 +14,7 @@ fs.readdir(inputDirectory, (err, files) => {
     }
     // process all files
     files.forEach((file) => {
-        if (file === '.gitkeep'){
+        if (file === '.gitkeep') {
             return;
         }
         const inputFilePath = path.join(inputDirectory, file);
@@ -49,8 +49,15 @@ function transformFunctionBody(content) {
             const code = line.trim().replaceAll('await', '').trim();
             transformedContent += transformCodeLine(code, eIndex);
             eIndex++;
+        } else if (line.trim().startsWith('const')) {
+            transformedContent += `
+    ${line.trim()}\n`;
         }
     });
+    if (!transformedContent.startsWith('await page.goto')){
+        transformedContent = `
+    await page.goto(pageUrl)\n` + transformedContent;
+    }
     return transformedContent;
 }
 
@@ -64,7 +71,7 @@ function transformCodeLine(code, eIndex) {
     return `
     const e${eIndex} = ${locator};
     await isVisible(e${eIndex});
-    await e${eIndex}.${action};\n`;
+    await e${eIndex}${action};\n`;
 }
 
 function buildTransformedScript(functionBody) {
@@ -85,12 +92,10 @@ async function isVisible(locator, timeout) {
 
 // Function to extract the locator from a line of code
 function extractLocator(code) {
-    const split = code.split('.');
-    return `page.${split[1]}`;
+    return code.substring(0, code.lastIndexOf('.'));
 }
 
 // Function to extract the action from a line of code
 function extractAction(code) {
-    const split = code.split('.');
-    return split[2].replaceAll(';', '');
+    return code.substring(code.lastIndexOf('.')).replaceAll(';', '');
 }
