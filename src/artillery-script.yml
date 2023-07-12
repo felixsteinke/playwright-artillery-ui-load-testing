@@ -1,16 +1,17 @@
 config:
   # insert custom config here
+  phases:
+    - duration: 60
+      arrivalRate: 1
+      maxVusers: 1
 
-
-
-  # playwright engine configuration
   engines:
     playwright:
       launchOptions:
-        headless: true
-  # constant path
-  processor: "./playwright-scenario.js"
-  # required but unused target
+        headless: false
+
+  # constant options
+  processor: "../3-scenario/playwright-scenario.js"
   target: "http://localhost"
 scenarios:
   - engine: playwright

@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "scripts": {
     "start": "echo Read the README.md for the usage description.",
-    "artillery": "artillery run src/artillery-script.yml"
+    "codegen": "node src/playwright-codegen.js",
+    "1": "node src/playwright-codegen.js",
+    "transform": "node src/code-transformer.js",
+    "2": "node src/code-transformer.js",
+    "select": "node src/scenario-selector.js",
+    "3": "node src/scenario-selector.js",
+    "artillery": "artillery run src/artillery-script.yml",
+    "4": "artillery run src/artillery-script.yml"
   },
   "dependencies": {
+    "@playwright/test": "^1.35.1",
     "artillery": "^2.0.0-34",
     "playwright": "^1.35.1"
   }

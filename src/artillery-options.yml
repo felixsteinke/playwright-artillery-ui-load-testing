@@ -1,0 +1,25 @@
+config:
+  # variable options
+  phases:
+    - name: Warm up the API
+      duration: 60
+      arrivalRate: 5
+      rampTo: 10
+    - name: Ramp up to peak load
+      duration: 60
+      arrivalRate: 10
+      rampTo: 50
+    - name: Sustained peak load
+      duration: 300
+      rampTo: 50
+  # playwright engine configuration
+  engines:
+    playwright:
+      launchOptions:
+        headless: false
+      contextOptions:
+        httpCredentials: {"username": "my-username", "password": "my-password"}
+  # constant path
+  processor: "../3-scenario/playwright-scenario.js"
+  # required but unused target
+  target: "http://localhost"
