@@ -18,26 +18,44 @@ const pageUrl = '';
     // open page
     const page = await context.newPage();
     await page.goto(pageUrl);
-    // insert generated code here
+    // insert generated code before breakpoint
 
 
-
-    // insert generated code here
-    // start recording
+    // breakpoint for recording
     await page.pause();
+    // insert generated code after breakpoint
+
+
     // teardown after recording
     await context.close();
     await browser.close();
 })();
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+// === UTILITY ===
 
 async function isVisible(locator, timeout) {
-    if (timeout) {
-        await locator.isVisible({timeout: timeout});
-    } else {
-        await locator.isVisible({timeout: 5000});
+    if (!timeout) {
+        timeout = 5000;
     }
+    await locator.isVisible({timeout: timeout});
+}
+
+async function checkSingleAdditionalFrame(page, timeout, attempts) {
+    if (!timeout) {
+        timeout = 10000;
+    }
+    if (!attempts) {
+        attempts = 10;
+    }
+    for (let i = 0; i < attempts; i++) {
+        if (page.frames().length <= 2) {
+            return;
+        } else {
+            await sleep(timeout / attempts);
+        }
+    }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
