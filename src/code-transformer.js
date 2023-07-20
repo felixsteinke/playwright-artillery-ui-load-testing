@@ -45,29 +45,73 @@ function transformFunctionBody(content) {
     let transformedContent = '';
     let eIndex = 0;
     lines.forEach((line) => {
-        if (line.trim().startsWith('await')) {
-            const code = line.trim().replaceAll('await', '').trim();
-            transformedContent += transformCodeLine(code, eIndex);
-            eIndex++;
-        } else if (line.trim().startsWith('const')) {
-            transformedContent += `
-    ${line.trim()}\n`;
+        // filter lines
+        if (line.startsWith('import') || line.startsWith('test') || line.startsWith('{') || line.startsWith('}')) {
+            return;
         }
+        // transform lines
+        transformedContent += transformLine(line.trim(), eIndex);
+        eIndex++;
     });
-    if (!transformedContent.startsWith('await page.goto')){
-        transformedContent = `
-    await page.goto(pageUrl)\n` + transformedContent;
+    if (!transformedContent.startsWith('await page.goto')) {
+        transformedContent = buildTransformedAwaitPageLines() + transformedContent;
     }
     return transformedContent;
 }
 
-function transformCodeLine(code, eIndex) {
-    const locator = extractLocator(code);
-    if (locator.startsWith('page.goto')) {
-        return `
-    await ${code}\n`;
+function transformLine(line, eIndex) {
+    if (line.startsWith('await')) {
+        const code = line.replaceAll('await', '').trim();
+        if (code.startsWith('page.goto')) {
+            return buildTransformedAwaitPageLines(line);
+        }
+        const locator = extractLocator(code);
+        const action = extractAction(line);
+        if (locator.startsWith('page.frameLocator')) {
+            return buildTransformedAwaitFrameLines(eIndex, locator, action);
+        }
+        return buildTransformedAwaitLines(eIndex, locator, action);
+    } else {
+        return buildTransformedUnmodifiedLine(line);
     }
-    const action = extractAction(code);
+}
+
+// Function to extract the locator from a line of code
+function extractLocator(code) {
+    return code.substring(0, code.lastIndexOf('.'));
+}
+
+// Function to extract the action from a line of code
+function extractAction(code) {
+    return code.substring(code.lastIndexOf('.')).replaceAll(';', '');
+}
+
+
+function buildTransformedAwaitPageLines(line) {
+    if (line) {
+        return `
+    await ${line}\n`
+    } else {
+        return `
+    const pageUrl = ''; // TODO insert url
+    await page.goto(pageUrl);\n`
+    }
+}
+
+function buildTransformedUnmodifiedLine(line) {
+    return `
+    ${line}`;
+}
+
+function buildTransformedAwaitFrameLines(eIndex, locator, action) {
+    return `
+    await checkSingleAdditionalFrame(page);
+    const e${eIndex} = ${locator};
+    await isVisible(e${eIndex});
+    await e${eIndex}${action};\n`;
+}
+
+function buildTransformedAwaitLines(eIndex, locator, action) {
     return `
     const e${eIndex} = ${locator};
     await isVisible(e${eIndex});
@@ -82,20 +126,29 @@ async function usageScenario(page) {
 }
 
 async function isVisible(locator, timeout) {
-    if (timeout) {
-        await locator.isVisible({ timeout: timeout });
-    } else {
-        await locator.isVisible({ timeout: 5000 });
+    if (!timeout) {
+        timeout = 5000;
     }
+    await locator.isVisible({timeout: timeout});
+}
+
+async function checkSingleAdditionalFrame(page, timeout, attempts) {
+    if (!timeout) {
+        timeout = 10000;
+    }
+    if (!attempts) {
+        attempts = 10;
+    }
+    for (let i = 0; i < attempts; i++) {
+        if (page.frames().length <= 2) {
+            return;
+        } else {
+            await sleep(timeout / attempts);
+        }
+    }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }`;
-}
-
-// Function to extract the locator from a line of code
-function extractLocator(code) {
-    return code.substring(0, code.lastIndexOf('.'));
-}
-
-// Function to extract the action from a line of code
-function extractAction(code) {
-    return code.substring(code.lastIndexOf('.')).replaceAll(';', '');
 }
