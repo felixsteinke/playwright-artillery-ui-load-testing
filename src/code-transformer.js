@@ -53,7 +53,8 @@ function transformFunctionBody(content) {
         transformedContent += transformLine(line.trim(), eIndex);
         eIndex++;
     });
-    if (!transformedContent.startsWith('await page.goto')) {
+    if (!transformedContent.startsWith(`
+    await page.goto`)) {
         transformedContent = buildTransformedAwaitPageLines() + transformedContent;
     }
     return transformedContent;
@@ -63,7 +64,7 @@ function transformLine(line, eIndex) {
     if (line.startsWith('await')) {
         const code = line.replaceAll('await', '').trim();
         if (code.startsWith('page.goto')) {
-            return buildTransformedAwaitPageLines(line);
+            return buildTransformedAwaitPageLines(code);
         }
         const locator = extractLocator(code);
         const action = extractAction(line);
@@ -89,8 +90,7 @@ function extractAction(code) {
 
 function buildTransformedAwaitPageLines(line) {
     if (line) {
-        return `
-    await ${line}\n`
+        return `await ${line}\n`
     } else {
         return `
     const pageUrl = ''; // TODO insert url
