@@ -8,3 +8,4 @@ HELP.md
 2-transformed-code/
 3-scenario/
 !**/.gitkeep
+!**/*-tutorial.js
