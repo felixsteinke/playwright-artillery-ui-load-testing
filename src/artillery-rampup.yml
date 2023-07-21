@@ -1,15 +1,15 @@
 config:
   # insert custom config here
   phases:
-    - name: 5 Users
+    - name: 3 Users
       duration: 300
       arrivalRate: 1
       maxVusers: 5
-    - name: 10 Users
+    - name: 6 Users
       duration: 300
       arrivalRate: 1
       maxVusers: 10
-    - name: 25 Users
+    - name: 12 Users
       duration: 300
       arrivalRate: 5
       maxVusers: 25

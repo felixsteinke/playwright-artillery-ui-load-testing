@@ -7,18 +7,22 @@ async function usageScenario(page) {
     const e2 = page.getByRole('button', { name: 'Alle akzeptieren' });
     await isVisible(e2);
     await e2.click();
+    await sleep(2000);
 
     const e3 = page.getByRole('combobox', { name: 'Suche' });
     await isVisible(e3);
     await e3.click();
+    await sleep(2000);
 
     const e4 = page.getByRole('combobox', { name: 'Suche' });
     await isVisible(e4);
     await e4.fill('Playwright Codegen Tutorial');
+    await sleep(2000);
 
     const e5 = page.getByRole('button', { name: 'Auf gut Glück!' }).first();
     await isVisible(e5);
     await e5.click();
+    await sleep(2000);
 
     // manual modification
     await sleep(5000);

@@ -108,14 +108,16 @@ function buildTransformedAwaitFrameLines(eIndex, locator, action) {
     await checkSingleAdditionalFrame(page);
     const e${eIndex} = ${locator};
     await isVisible(e${eIndex});
-    await e${eIndex}${action};\n`;
+    await e${eIndex}${action};
+    await sleep(2000);\n`;
 }
 
 function buildTransformedAwaitLines(eIndex, locator, action) {
     return `
     const e${eIndex} = ${locator};
     await isVisible(e${eIndex});
-    await e${eIndex}${action};\n`;
+    await e${eIndex}${action};
+    await sleep(2000);\n`;
 }
 
 function buildTransformedScript(functionBody) {

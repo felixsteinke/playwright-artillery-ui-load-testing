@@ -2,6 +2,7 @@ config:
   # insert custom config here
   phases:
     - duration: 60
+      name: Single Users
       arrivalRate: 1
       maxVusers: 1
 
