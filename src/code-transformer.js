@@ -66,9 +66,12 @@ function transformLine(line, eIndex) {
         if (code.startsWith('page.goto')) {
             return buildTransformedAwaitPageLines(code);
         }
+        if (code.includes('File') || code.includes('file')){
+            return buildTransformedUnmodifiedLine(line);
+        }
         const locator = extractLocator(code);
         const action = extractAction(line);
-        if (locator.startsWith('page.frameLocator')) {
+        if (locator.startsWith('page.frameLocator') && !locator.includes('nth')) {
             return buildTransformedAwaitFrameLines(eIndex, locator, action);
         }
         return buildTransformedAwaitLines(eIndex, locator, action);
@@ -108,14 +111,16 @@ function buildTransformedAwaitFrameLines(eIndex, locator, action) {
     await checkSingleAdditionalFrame(page);
     const e${eIndex} = ${locator};
     await isVisible(e${eIndex});
-    await e${eIndex}${action};\n`;
+    await e${eIndex}${action};
+    await sleep(2000);\n`;
 }
 
 function buildTransformedAwaitLines(eIndex, locator, action) {
     return `
     const e${eIndex} = ${locator};
     await isVisible(e${eIndex});
-    await e${eIndex}${action};\n`;
+    await e${eIndex}${action};
+    await sleep(2000);\n`;
 }
 
 function buildTransformedScript(functionBody) {
