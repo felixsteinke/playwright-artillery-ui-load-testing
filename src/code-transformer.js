@@ -66,9 +66,12 @@ function transformLine(line, eIndex) {
         if (code.startsWith('page.goto')) {
             return buildTransformedAwaitPageLines(code);
         }
+        if (code.includes('File') || code.includes('file')){
+            return buildTransformedUnmodifiedLine(line);
+        }
         const locator = extractLocator(code);
         const action = extractAction(line);
-        if (locator.startsWith('page.frameLocator')) {
+        if (locator.startsWith('page.frameLocator') && !locator.includes('nth')) {
             return buildTransformedAwaitFrameLines(eIndex, locator, action);
         }
         return buildTransformedAwaitLines(eIndex, locator, action);
